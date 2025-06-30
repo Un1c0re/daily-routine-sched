@@ -2,31 +2,31 @@ export const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 export const dayOptions = [
   {
     label: "Пн",
-    value: 1,
+    value: 0,
   },
   {
     label: "Вт",
-    value: 2,
+    value: 1,
   },
   {
     label: "Ср",
-    value: 3,
+    value: 2,
   },
   {
     label: "Чт",
-    value: 4,
+    value: 3,
   },
   {
     label: "Пт",
-    value: 5,
+    value: 4,
   },
   {
     label: "Сб",
-    value: 6,
+    value: 5,
   },
   {
     label: "Вс",
-    value: 0,
+    value: 6,
   },
 ];
 

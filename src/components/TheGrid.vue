@@ -8,8 +8,12 @@
         :is-current-day="day.isCurrent"
       />
     </div>
-    <div class="flex-1 h-full w-full grid grid-cols-7 gap-2">
-      <div v-for="dayGroup in store.groupedCards" :key="dayGroup.day">
+    <div class="h-full w-full grid grid-cols-7 gap-x-2">
+      <div
+        v-for="dayGroup in store.groupedCards"
+        :key="dayGroup.day"
+        class="grid justify-start gap-y-2 grid-rows-[min-content]"
+      >
         <CellCard v-for="card in dayGroup.cards" :key="card.id" :card="new Card({ ...card })" />
       </div>
     </div>

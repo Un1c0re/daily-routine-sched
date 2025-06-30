@@ -14,7 +14,7 @@ export const useCardStore = defineStore("CardStore", () => {
   const groupedCards = computed(() => {
     const grouped = _.groupBy(cards.value, (c) => c.day);
 
-    return _.range(1, 8).map((day) => {
+    return _.range(0, 7).map((day) => {
       return {
         day,
         cards: _.sortBy(grouped[day] ?? [], "startTime"),
