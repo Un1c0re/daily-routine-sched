@@ -1,9 +1,26 @@
+<template>
+  <main :style="{'margin-bottom' : footerHeight + 'px'}">
+    <router-view />
+  </main>
+  <footer ref="footer"></footer>
+</template>
+
+
 <script setup lang="ts">
-import TheMain from "@/views/TheMain.vue";
+import { useElementSize } from "@vueuse/core"
+import {ref} from "vue";
+
+const footer = ref();
+
+const {height: footerHeight} = useElementSize(footer)
+
 </script>
 
-<template>
-  <div class="h-[90vh] w-[90vw] flex flex-col items-center justify-stretch">
-    <TheMain />
-  </div>
-</template>
+<style scoped>
+footer {
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+</style>

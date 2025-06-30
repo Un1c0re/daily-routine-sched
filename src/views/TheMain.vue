@@ -1,24 +1,17 @@
 <template>
-  <div class="h-full w-full flex flex-col justify-between">
+  <div class="h-full w-full flex flex-col justify-between gap-10">
     <h1 class="self-start">Daily Routine Sched</h1>
     <TheGrid/>
-    <footer ref="footer" class="footer"/>
+    <ModalCardEditor />
   </div>
 </template>
 
 <script setup lang="ts">
 import TheGrid from "@/components/TheGrid.vue";
-import {ref} from "vue";
+import ModalCardEditor from "@/components/ModalCardEditor.vue";
+import {useModalViewer} from "@/composables/useModalViewer";
+import {provide} from "vue";
 
-const footer = ref();
+const modal = useModalViewer();
+provide('modalViewer', modal);
 </script>
-
-
-<style scoped>
-.footer {
-  height: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
-</style>
