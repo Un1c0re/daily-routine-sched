@@ -39,7 +39,6 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-        <el-button v-if="cardToEdit != null" type="danger" @click="deleteCard">Удалить</el-button>
         <el-button type="primary" @click="submit">Сохранить</el-button>
       </div>
     </template>
@@ -47,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 import { inject, reactive, watch } from "vue";
 
 import { ModalViewer } from "@/composables/useModalViewer";
@@ -82,16 +81,6 @@ const submit = () => {
   }
   ElMessage.success("Запись добавлена");
   closeDialog();
-};
-
-const deleteCard = () => {
-  if (cardToEdit.value == null) return;
-
-  ElMessageBox.confirm("Удалить запись?", "Внимание").then(() => {
-    store.deleteCard(cardToEdit.value!);
-    closeDialog();
-    ElMessage.success("Запись удалена");
-  });
 };
 
 const resetForm = () => {
