@@ -1,6 +1,6 @@
 <template>
   <div
-    class="max-w-[14em] max-h-[3em] p-2 rounded-md flex items-center"
+    class="flex max-h-[3em] max-w-[14em] items-center rounded-md p-2"
     :style="{ 'background-color': props.isCurrentDay ? '#409EFF' : '#1D1E1F' }"
   >
     <p class="text-[2em]">{{ props.dayName }}</p>

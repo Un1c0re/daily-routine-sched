@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="modalVisible" @close="closeDialog" width="40%">
     <template #header>
-      <div class="w-full flex items-center">
+      <div class="flex w-full items-center">
         <p class="text-[2em]">{{ cardToEdit ? "Редактировать запись" : "Создать запись" }}</p>
       </div>
     </template>

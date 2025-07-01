@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-[30em] flex flex-col gap-2">
-    <div class="grid grid-cols-7 grid-rows1 gap-2">
+  <div class="flex min-h-[30em] flex-col gap-2">
+    <div class="grid-rows1 grid grid-cols-7 gap-2">
       <HeaderCard
         v-for="(day, index) in weekDays"
         :key="index"
@@ -8,11 +8,11 @@
         :is-current-day="day.isCurrent"
       />
     </div>
-    <div class="h-full w-full grid grid-cols-7 gap-x-2">
+    <div class="grid h-full w-full grid-cols-7 gap-x-2">
       <div
         v-for="dayGroup in store.groupedCards"
         :key="dayGroup.day"
-        class="grid justify-start gap-y-2 grid-rows-[min-content]"
+        class="grid grid-rows-[min-content] justify-start gap-y-2"
       >
         <CellCard v-for="card in dayGroup.cards" :key="card.id" :card="new Card({ ...card })" />
       </div>

@@ -9,7 +9,7 @@ import vueParser from "vue-eslint-parser";
 
 export default defineConfig([
   {
-    ignores: ["eslint.config.js"],
+    ignores: ["eslint.config.js", "tailwind.config.js"],
     files: ["**/*.{js,cjs,mjs,ts,cts,mts}"],
     languageOptions: {
       parser: tseslint.parser,

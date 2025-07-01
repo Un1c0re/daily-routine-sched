@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full flex flex-col justify-between gap-10">
+  <div class="flex h-full w-full flex-col justify-between gap-10">
     <h1 class="self-start">Daily Routine Sched</h1>
     <TheGrid />
     <ModalCardEditor />

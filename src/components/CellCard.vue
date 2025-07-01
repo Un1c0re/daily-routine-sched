@@ -1,6 +1,7 @@
 <template>
-  <div class="relative">
+  <div class="relative" @mouseenter="() => (hovered = true)" @mouseleave="() => (hovered = false)">
     <el-button
+      v-show="hovered"
       class="absolute left-0"
       circle
       text
@@ -9,13 +10,13 @@
       @click="deleteCard"
     />
     <div
-      class="card-default max-w-[14em] min-h-[6em] max-h-[7em] p-2 rounded-md"
+      class="card-default max-h-[7em] min-h-[6em] max-w-[14em] rounded-md p-2"
       @click="openEditor"
     >
-      <p class="time text-sm col-start-2 justify-self-end self-start">
+      <p class="time col-start-2 self-start justify-self-end text-sm">
         {{ props.card.startTime }} - {{ props.card.endTime }}
       </p>
-      <p class="description col-span-2 justify-self-start self-end">{{ props.card.title }}</p>
+      <p class="description col-span-2 self-end justify-self-start">{{ props.card.title }}</p>
     </div>
   </div>
 </template>
@@ -23,7 +24,7 @@
 <script lang="ts" setup>
 import { Close } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { inject } from "vue";
+import { inject, ref } from "vue";
 
 import { ModalViewer } from "@/composables/useModalViewer";
 import Card from "@/models/Card";
@@ -39,6 +40,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const hovered = ref(false);
 
 const openEditor = () => {
   open(props.card);
