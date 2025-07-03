@@ -42,6 +42,13 @@ export const useCardStore = defineStore("CardStore", () => {
     }
   };
 
+  const getMaxTimeByDay = (day: number) => {
+    const cardsByDay = cards.value.filter((card) => card.day == day);
+
+    if (cardsByDay.length == 0) return null;
+    return _.maxBy(cardsByDay, (c) => c.endTime)!.endTime;
+  };
+
   return {
     cards,
     $reset,
@@ -49,5 +56,6 @@ export const useCardStore = defineStore("CardStore", () => {
     addCard,
     editCard,
     deleteCard,
+    getMaxTimeByDay,
   };
 });
