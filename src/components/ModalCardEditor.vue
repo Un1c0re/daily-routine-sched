@@ -23,13 +23,17 @@
         </el-col>
         <el-col :span="1" />
         <el-col :span="9">
-          <el-time-select v-model="form.startTime" start="6:00" end="23:00" />
+          <el-time-select
+            v-model="form.startTime"
+            :start="computedStartTimeStart"
+            :end="computedStartTimeEnd"
+          />
         </el-col>
         <el-col :span="1" class="text-center">
           <span class="text-gray-500">-</span>
         </el-col>
         <el-col :span="9">
-          <el-time-select v-model="form.endTime" start="6:00" end="23:00" />
+          <el-time-select v-model="form.endTime" :start="computedEndTimeStart" end="23:00" />
         </el-col>
       </el-form-item>
 
@@ -47,13 +51,14 @@
 
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
-import { inject, reactive, watch } from "vue";
+import { computed, inject, reactive, watch } from "vue";
 
 import { ModalViewer } from "@/composables/useModalViewer";
 import Card from "@/models/Card";
 import { Form } from "@/models/Form";
 import { useCardStore } from "@/store/CardStore";
 import { dayOptions, getAdjustedDay } from "@/utils/constants";
+import TimeHelpers from "@/utils/TimeHelpers";
 
 const { modalVisible, editableValue: cardToEdit, close } = inject<ModalViewer>("modalViewer")!;
 const store = useCardStore();
@@ -64,6 +69,33 @@ const form = reactive<Form>({
   startTime: "",
   endTime: "",
   description: "",
+});
+
+const computedStartTimeStart = computed(() => {
+  const maxTime = store.getMaxTimeByDay(form.day);
+
+  return maxTime ?? "06:00";
+});
+
+const computedStartTimeEnd = computed(() => {
+  if (form.endTime) {
+    return TimeHelpers.decrementTime(form.endTime);
+  }
+
+  return "23:00";
+});
+
+const computedEndTimeStart = computed(() => {
+  if (form.startTime) {
+    return TimeHelpers.incrementTime(form.startTime);
+  }
+
+  const maxTime = store.getMaxTimeByDay(form.day);
+  if (maxTime) {
+    return TimeHelpers.incrementTime(maxTime);
+  }
+
+  return "06:30";
 });
 
 const submit = () => {
