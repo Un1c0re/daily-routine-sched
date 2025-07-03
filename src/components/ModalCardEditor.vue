@@ -5,12 +5,12 @@
         <p class="text-[2em]">{{ cardToEdit ? "Редактировать запись" : "Создать запись" }}</p>
       </div>
     </template>
-    <el-form :model="form">
-      <el-form-item label="Заголовок" label-position="top">
+    <el-form ref="formRef" :model="form" :rules="rules">
+      <el-form-item label="Заголовок" label-position="top" prop="title">
         <el-input v-model="form.title" />
       </el-form-item>
 
-      <el-form-item label="День и время" label-position="top">
+      <el-form-item label="День и время" label-position="top" required>
         <el-col :span="4">
           <el-select v-model="form.day">
             <el-option
@@ -23,17 +23,21 @@
         </el-col>
         <el-col :span="1" />
         <el-col :span="9">
-          <el-time-select
-            v-model="form.startTime"
-            :start="computedStartTimeStart"
-            :end="computedStartTimeEnd"
-          />
+          <el-form-item prop="startTime">
+            <el-time-select
+              v-model="form.startTime"
+              :start="computedStartTimeStart"
+              :end="computedStartTimeEnd"
+            />
+          </el-form-item>
         </el-col>
         <el-col :span="1" class="text-center">
           <span class="text-gray-500">-</span>
         </el-col>
         <el-col :span="9">
-          <el-time-select v-model="form.endTime" :start="computedEndTimeStart" end="23:00" />
+          <el-form-item prop="endTime">
+            <el-time-select v-model="form.endTime" :start="computedEndTimeStart" end="23:00" />
+          </el-form-item>
         </el-col>
       </el-form-item>
 
@@ -50,8 +54,8 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
-import { computed, inject, reactive, watch } from "vue";
+import { ElMessage, FormInstance, FormRules } from "element-plus";
+import { computed, inject, reactive, ref, watch } from "vue";
 
 import { ModalViewer } from "@/composables/useModalViewer";
 import Card from "@/models/Card";
@@ -63,12 +67,36 @@ import TimeHelpers from "@/utils/TimeHelpers";
 const { modalVisible, editableValue: cardToEdit, close } = inject<ModalViewer>("modalViewer")!;
 const store = useCardStore();
 
+const formRef = ref<FormInstance>();
 const form = reactive<Form>({
   title: "",
   day: getAdjustedDay(),
   startTime: "",
   endTime: "",
   description: "",
+});
+
+const rules = reactive<FormRules<Form>>({
+  title: [
+    { required: true, message: "Пожалуйста, заполните поле", trigger: "blur" },
+    { min: 3, max: 16, message: "Длина поля должна быть от 3 до 16 символов", trigger: "blur" },
+  ],
+  startTime: [
+    {
+      type: "string",
+      required: true,
+      message: "Выберите время начала",
+      trigger: "change",
+    },
+  ],
+  endTime: [
+    {
+      type: "string",
+      required: true,
+      message: "Выберите время окончания",
+      trigger: "change",
+    },
+  ],
 });
 
 const computedStartTimeStart = computed(() => {
@@ -98,12 +126,15 @@ const computedEndTimeStart = computed(() => {
   return "06:30";
 });
 
-const submit = () => {
-  if (!form.title || !form.startTime || !form.endTime) {
-    ElMessage.warning("Заполните необходимые поля");
-    return;
-  }
+const submit = async () => {
+  await formRef.value!.validate((valid, _) => {
+    if (valid) {
+      saveCard();
+    }
+  });
+};
 
+const saveCard = () => {
   if (cardToEdit.value) {
     const editedCard = new Card({ id: cardToEdit.value.id, ...form });
     store.editCard(editedCard);
