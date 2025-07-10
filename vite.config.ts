@@ -5,6 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 import VueDevTools from "vite-plugin-vue-devtools";
 
 export default defineConfig({
+  base: process.env.NODE_ENV === "production" ? "/daily-routine-sched/" : "/",
+  build: {
+    target: "esnext",
+  },
   plugins: [
     vue(),
     VueDevTools(),
